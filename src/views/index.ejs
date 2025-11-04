@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Drugi Labos</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <h1>početna stranica</h1>
+    <header>
+        <% if (user) { %>
+            <p>Korisnik: <%= user.name %></p>
+            <form action="/logout" method="get">
+            <button type="submit">Odjava</button>
+        </form>
+        <% } else { %>
+            <form action="/login" method="get">
+            <button type="submit">Prijava</button>
+        </form>
+        <% } %>
+    </header>
+    <% if (!brojevi && user) { %>
+        <div>
+            <form name="unosPodataka" action="/input" onsubmit="return validateForm()" method="post">
+                <label for="iskaznica">Broj osobne iskaznice ili putovnice:</label><br>
+                <input type="text" id="iskaznica" name="iskaznica" pattern="[0-9]+" maxlength="20" required><br>
+                <label for="brojevi">6 do 10 brojeva u rasponu od 1 do 45, međusobno odvojeni zarezima: </label><br>
+                <input type="text" id="brojevi" name="brojevi" required>
+                <button type="submit">Pošalji</button>
+            </form>
+        </div>
+    <% } else { %>
+        <div>
+            <p>upisani brojevi: <%= brojevi %></p>
+        </div>
+    <% } %>
+</body>
+</html>
