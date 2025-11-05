@@ -53,14 +53,14 @@ app.post('/ukljuci-ranjivost', async (req, res) => {
 app.post('/iskljuci-ranjivost', async (req, res) => {
     req.session.ranjivost = 0
     req.session.cookie.httpOnly = true
-    res.redirect('/')
+    req.session.save(() => res.redirect('/'))
 });
 
 app.post('/input', async (req, res) => {
   let {ime, lozinka } = req.body
   if (req.session.ranjivost){
     req.session.ime=ime
-    req.session.lozinka=ime
+    req.session.lozinka=lozinka
     res.redirect('/?ime=' + encodeURIComponent(ime) + '&lozinka=' + encodeURIComponent(lozinka))
   }else{
     ime=ime.replace(/[^a-zA-Z0-9 ]/g, '')
