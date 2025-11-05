@@ -7,33 +7,41 @@
 </head>
 
 <body>
-    <h1>početna stranica</h1>
-    <header>
-        <% if (user) { %>
-            <p>Korisnik: <%= user.name %></p>
-            <form action="/logout" method="get">
-            <button type="submit">Odjava</button>
+    <% if (ranjivost) { %>
+        <form action="/iskljuci-ranjivost" method="post">
+            <input type="hidden" name="ranjivost" value="0">
+            <button type="submit">Isključi ranjivost</button>
         </form>
-        <% } else { %>
-            <form action="/login" method="get">
-            <button type="submit">Prijava</button>
+        <pre>
+            Ranjivost je uključena, stranica nije sigurna protiv XSS napada i nesigurna je pohrana osjetljivih podataka.
+            Ako se napiše recimo "&lt;script&gt;alert("XSS napad")&lt;/script&gt;" u input za ime, ispisat će se "XSS napad".
+            Kada se pošalju podaci, promjenit će se url na kojem pišu ime i lozinka ne hashirani.
+        </pre>
+        <form name="forma" action="/input" method="post">
+            <label for="ime">Upiši ime:</label><br>
+            <input type="text" name="ime" required><br>
+            <label for="lozinka">Upiši lozinku: </label><br>
+            <input type="text" name="lozinka" required><br>
+            <button type="submit">Pošalji</button>
         </form>
+        <% if (ime) { %>
+            <p>Hello <%- ime %></p>
         <% } %>
-    </header>
-    <% if (!brojevi && user) { %>
-        <div>
-            <form name="unosPodataka" action="/input" onsubmit="return validateForm()" method="post">
-                <label for="iskaznica">Broj osobne iskaznice ili putovnice:</label><br>
-                <input type="text" id="iskaznica" name="iskaznica" pattern="[0-9]+" maxlength="20" required><br>
-                <label for="brojevi">6 do 10 brojeva u rasponu od 1 do 45, međusobno odvojeni zarezima: </label><br>
-                <input type="text" id="brojevi" name="brojevi" required>
-                <button type="submit">Pošalji</button>
-            </form>
-        </div>
-    <% } else { %>
-        <div>
-            <p>upisani brojevi: <%= brojevi %></p>
-        </div>
+    <% }else if (!ranjivost) { %>
+        <form action="/ukljuci-ranjivost" method="post">
+            <input type="hidden" name="ranjivost" value="1">
+            <button type="submit">Uključi ranjivost</button>
+        </form>
+        <form name="forma" action="/input" method="post">
+            <label for="ime">Upiši ime:</label><br>
+            <input type="text" name="ime" pattern="[A-Za-z]+" maxlength="20" required><br>
+            <label for="lozinka">Upiši lozinku: </label><br>
+            <input type="password" name="lozinka" pattern="[A-Za-z0-9]+" maxlength="20"required><br>
+            <button type="submit">Pošalji</button>
+        </form>
+        <% if (ime) { %>
+            <p>Hello <%= ime %></p>
+        <% } %>
     <% } %>
 </body>
 </html>
