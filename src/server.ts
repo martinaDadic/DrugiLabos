@@ -46,14 +46,12 @@ app.get('/', (req, res) => {
 
 app.post('/ukljuci-ranjivost', async (req, res) => {
     req.session.ranjivost = 1
-    req.session.cookie.httpOnly = false
-    req.session.save(() => res.redirect('/'))
+    res.redirect('/')
 });
 
 app.post('/iskljuci-ranjivost', async (req, res) => {
     req.session.ranjivost = 0
-    req.session.cookie.httpOnly = true
-    req.session.save(() => res.redirect('/'))
+    res.redirect('/')
 });
 
 app.post('/input', async (req, res) => {
