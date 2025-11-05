@@ -59,8 +59,8 @@ app.post('/iskljuci-ranjivost', async (req, res) => {
 app.post('/input', async (req, res) => {
   let {ime, lozinka } = req.body
   if (req.session.ranjivost){
-    req.session.ime=null
-    req.session.lozinka=null
+    req.session.ime=ime
+    req.session.lozinka=ime
     res.redirect('/?ime=' + encodeURIComponent(ime) + '&lozinka=' + encodeURIComponent(lozinka))
   }else{
     ime=ime.replace(/[^a-zA-Z0-9 ]/g, '')
